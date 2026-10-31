@@ -6,7 +6,7 @@ from .config import Settings
 def main() -> None:
     settings = Settings.from_env()
     uvicorn.run(
-        "athena.main:app",
+        "sophia.main:app",
         host=settings.host,
         port=settings.port,
         workers=1,

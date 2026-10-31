@@ -145,7 +145,7 @@ function eventCard(event) {
   rerunRow.append(element("span", "", "Rerun"));
   const rerunButton = element("button", "copy-rerun", "Copy rerun command");
   rerunButton.type = "button";
-  const rerunCommand = `athena rerun ${event.id}`;
+  const rerunCommand = `sophia rerun ${event.id}`;
   rerunButton.addEventListener("click", async () => {
     try {
       if (navigator.clipboard && window.isSecureContext) {
@@ -505,7 +505,7 @@ elements["theme-toggle"].addEventListener("change", (event) => {
     delete document.documentElement.dataset.theme;
   }
   try {
-    localStorage.setItem("athena-theme", dark ? "dark" : "light");
+    localStorage.setItem("sophia-theme", dark ? "dark" : "light");
   } catch (_) {}
 });
 

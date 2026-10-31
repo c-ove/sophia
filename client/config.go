@@ -18,17 +18,17 @@ type clientConfig struct {
 
 func loadConfig() clientConfig {
 	home, _ := os.UserHomeDir()
-	baseDir := os.Getenv("ATHENA_BASE_DIR")
+	baseDir := os.Getenv("SOPHIA_BASE_DIR")
 	if baseDir == "" {
-		baseDir = filepath.Join(home, ".cache", "athena")
+		baseDir = filepath.Join(home, ".cache", "sophia")
 	}
-	spoolDir := os.Getenv("ATHENA_SPOOL_DIR")
+	spoolDir := os.Getenv("SOPHIA_SPOOL_DIR")
 	if spoolDir == "" {
 		spoolDir = filepath.Join(baseDir, "spool")
 	}
 	return clientConfig{
-		serverURL: strings.TrimRight(os.Getenv("ATHENA_SERVER_URL"), "/"),
-		token:     os.Getenv("ATHENA_TOKEN"),
+		serverURL: strings.TrimRight(os.Getenv("SOPHIA_SERVER_URL"), "/"),
+		token:     os.Getenv("SOPHIA_TOKEN"),
 		baseDir:   baseDir,
 		spoolDir:  spoolDir,
 	}
@@ -36,10 +36,10 @@ func loadConfig() clientConfig {
 
 func (config clientConfig) validate() error {
 	if config.serverURL == "" {
-		return fmt.Errorf("ATHENA_SERVER_URL is required")
+		return fmt.Errorf("SOPHIA_SERVER_URL is required")
 	}
 	if config.token == "" {
-		return fmt.Errorf("ATHENA_TOKEN is required")
+		return fmt.Errorf("SOPHIA_TOKEN is required")
 	}
 	return nil
 }
@@ -55,10 +55,10 @@ func (config clientConfig) request(method, path string, body io.Reader) (*http.R
 
 func (config clientConfig) environment() []string {
 	return append(os.Environ(),
-		"ATHENA_SERVER_URL="+config.serverURL,
-		"ATHENA_TOKEN="+config.token,
-		"ATHENA_BASE_DIR="+config.baseDir,
-		"ATHENA_SPOOL_DIR="+config.spoolDir,
+		"SOPHIA_SERVER_URL="+config.serverURL,
+		"SOPHIA_TOKEN="+config.token,
+		"SOPHIA_BASE_DIR="+config.baseDir,
+		"SOPHIA_SPOOL_DIR="+config.spoolDir,
 	)
 }
 

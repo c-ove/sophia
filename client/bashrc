@@ -1,4 +1,4 @@
 if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
 fi
-. "$(dirname "$ATHENA_BASHRC")/athena-shell.sh"
+. "$(dirname "$SOPHIA_BASHRC")/sophia-shell.sh"

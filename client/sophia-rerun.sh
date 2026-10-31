@@ -2,8 +2,8 @@
 set -u
 umask 077
 
-: "${ATHENA_SERVER_URL:?Set ATHENA_SERVER_URL to the Athena server URL}"
-: "${ATHENA_TOKEN:?Set ATHENA_TOKEN to the ingestion token}"
+: "${SOPHIA_SERVER_URL:?Set SOPHIA_SERVER_URL to the Sophia server URL}"
+: "${SOPHIA_TOKEN:?Set SOPHIA_TOKEN to the ingestion token}"
 
 assume_yes=false
 if [ "${1:-}" = "--yes" ]; then
@@ -12,7 +12,7 @@ if [ "${1:-}" = "--yes" ]; then
 fi
 
 if [ "$#" -ne 1 ]; then
-    printf 'Usage: athena-rerun.sh [--yes] EVENT_ID\n' >&2
+    printf 'Usage: sophia-rerun.sh [--yes] EVENT_ID\n' >&2
     exit 2
 fi
 
@@ -23,8 +23,8 @@ if ! printf '%s' "$event_id" | grep -Eq '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA
 fi
 
 command=$(curl --fail --silent --show-error --connect-timeout 3 --max-time 15 \
-    --header "Authorization: Bearer $ATHENA_TOKEN" \
-    "${ATHENA_SERVER_URL%/}/api/commands/$event_id/command") || {
+    --header "Authorization: Bearer $SOPHIA_TOKEN" \
+    "${SOPHIA_SERVER_URL%/}/api/commands/$event_id/command") || {
     printf 'Could not retrieve command %s\n' "$event_id" >&2
     exit 1
 }
@@ -43,9 +43,9 @@ if [ "$assume_yes" = false ]; then
     esac
 fi
 
-shell=${ATHENA_CLIENT_SHELL:-${SHELL##*/}}
+shell=${SOPHIA_CLIENT_SHELL:-${SHELL##*/}}
 case "$shell" in
     bash|zsh) ;;
-    *) printf 'Athena rerun supports bash or zsh\n' >&2; exit 2 ;;
+    *) printf 'Sophia rerun supports bash or zsh\n' >&2; exit 2 ;;
 esac
 "$shell" -c "$command"

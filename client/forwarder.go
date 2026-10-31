@@ -38,7 +38,7 @@ func runForwarder(config clientConfig, args []string) error {
 	defer syscall.Flock(int(lock.Fd()), syscall.LOCK_UN)
 
 	retrySeconds := 5
-	if value, err := strconv.Atoi(os.Getenv("ATHENA_RETRY_SECONDS")); err == nil && value > 0 {
+	if value, err := strconv.Atoi(os.Getenv("SOPHIA_RETRY_SECONDS")); err == nil && value > 0 {
 		retrySeconds = value
 	}
 	for {

@@ -1,5 +1,5 @@
 [Unit]
-Description=Athena command telemetry server
+Description=Sophia command telemetry server
 After=network-online.target
 Wants=network-online.target
 
@@ -7,9 +7,9 @@ Wants=network-online.target
 Type=simple
 User=debian
 Group=debian
-WorkingDirectory=/home/debian/athena
-EnvironmentFile=/home/debian/athena/athena.env
-ExecStart=/home/debian/athena/.venv/bin/athena-server
+WorkingDirectory=/home/debian/sophia
+EnvironmentFile=/home/debian/sophia/sophia.env
+ExecStart=/home/debian/sophia/.venv/bin/sophia-server
 Restart=on-failure
 RestartSec=3
 TimeoutStopSec=10

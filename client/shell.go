@@ -14,7 +14,7 @@ import (
 )
 
 var runtimeAssetFiles = []string{
-	"athena-shell.sh",
+	"sophia-shell.sh",
 	"bashrc",
 	"zdotdir/.zshrc",
 	"zdotdir/.zshenv",
@@ -26,7 +26,7 @@ func runShell(config clientConfig, args []string) error {
 	if err := config.validate(); err != nil {
 		return err
 	}
-	defaultShell := os.Getenv("ATHENA_SHELL")
+	defaultShell := os.Getenv("SOPHIA_SHELL")
 	if defaultShell == "" {
 		defaultShell = filepath.Base(os.Getenv("SHELL"))
 	}
@@ -70,11 +70,11 @@ func runShell(config clientConfig, args []string) error {
 		return err
 	}
 	defer os.Remove(rawLog)
-	hostIP := os.Getenv("ATHENA_HOST_IP")
+	hostIP := os.Getenv("SOPHIA_HOST_IP")
 	if hostIP == "" {
 		hostIP, err = detectHostIP()
 		if err != nil {
-			return fmt.Errorf("could not determine host IP; set ATHENA_HOST_IP: %w", err)
+			return fmt.Errorf("could not determine host IP; set SOPHIA_HOST_IP: %w", err)
 		}
 	}
 	hostname, _ := os.Hostname()
@@ -88,16 +88,16 @@ func runShell(config clientConfig, args []string) error {
 		originalZdotdir = home
 	}
 	environment := append(config.environment(),
-		"ATHENA_SESSION_ID="+sessionID,
-		"ATHENA_SESSION_DIR="+sessionDir,
-		"ATHENA_RAW_LOG="+rawLog,
-		"ATHENA_HOST_IP="+hostIP,
-		"ATHENA_HOSTNAME="+hostname,
-		"ATHENA_CLIENT_SHELL="+*shellName,
-		"ATHENA_BASHRC="+filepath.Join(runtimeDir, "bashrc"),
-		"ATHENA_ORIGINAL_ZDOTDIR="+originalZdotdir,
-		"ATHENA_MAX_OUTPUT_BYTES="+environmentValue(os.Environ(), "ATHENA_MAX_OUTPUT_BYTES", "65536"),
-		"ATHENA_MAX_SPOOL_FILES="+environmentValue(os.Environ(), "ATHENA_MAX_SPOOL_FILES", "1000"),
+		"SOPHIA_SESSION_ID="+sessionID,
+		"SOPHIA_SESSION_DIR="+sessionDir,
+		"SOPHIA_RAW_LOG="+rawLog,
+		"SOPHIA_HOST_IP="+hostIP,
+		"SOPHIA_HOSTNAME="+hostname,
+		"SOPHIA_CLIENT_SHELL="+*shellName,
+		"SOPHIA_BASHRC="+filepath.Join(runtimeDir, "bashrc"),
+		"SOPHIA_ORIGINAL_ZDOTDIR="+originalZdotdir,
+		"SOPHIA_MAX_OUTPUT_BYTES="+environmentValue(os.Environ(), "SOPHIA_MAX_OUTPUT_BYTES", "65536"),
+		"SOPHIA_MAX_SPOOL_FILES="+environmentValue(os.Environ(), "SOPHIA_MAX_SPOOL_FILES", "1000"),
 	)
 	if *shellName == "zsh" {
 		environment = append(environment, "ZDOTDIR="+filepath.Join(runtimeDir, "zdotdir"))
@@ -110,7 +110,7 @@ func runShell(config clientConfig, args []string) error {
 	if runtime.GOOS == "linux" {
 		shellCommand := *shellName + " -i"
 		if *shellName == "bash" {
-			shellCommand = `bash --rcfile "$ATHENA_BASHRC" -i`
+			shellCommand = `bash --rcfile "$SOPHIA_BASHRC" -i`
 		}
 		command = exec.Command("script", "--quiet", "--flush", "--log-out", rawLog, "--command", shellCommand)
 	} else {

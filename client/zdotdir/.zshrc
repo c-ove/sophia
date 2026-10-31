@@ -1,4 +1,4 @@
-if [ -f "$ATHENA_ORIGINAL_ZDOTDIR/.zshrc" ]; then
-    source "$ATHENA_ORIGINAL_ZDOTDIR/.zshrc"
+if [ -f "$SOPHIA_ORIGINAL_ZDOTDIR/.zshrc" ]; then
+    source "$SOPHIA_ORIGINAL_ZDOTDIR/.zshrc"
 fi
-source "$ATHENA_BASHRC:h/athena-shell.sh"
+source "$SOPHIA_BASHRC:h/sophia-shell.sh"

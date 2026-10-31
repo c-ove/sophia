@@ -33,12 +33,12 @@ def display_event(event: dict[str, Any]) -> dict[str, Any]:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     if not settings.token:
-        raise RuntimeError("ATHENA_TOKEN must be set before starting the server")
+        raise RuntimeError("SOPHIA_TOKEN must be set before starting the server")
     db.initialize()
     yield
 
 
-app = FastAPI(title="Athena", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Sophia", version="0.1.0", lifespan=lifespan)
 
 
 @app.middleware("http")

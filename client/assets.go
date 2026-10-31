@@ -2,5 +2,5 @@ package main
 
 import "embed"
 
-//go:embed athena-shell.sh bashrc all:zdotdir
+//go:embed sophia-shell.sh bashrc all:zdotdir
 var clientAssets embed.FS

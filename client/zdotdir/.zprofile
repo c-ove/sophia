@@ -1,3 +1,3 @@
-if [ -f "$ATHENA_ORIGINAL_ZDOTDIR/.zprofile" ]; then
-    source "$ATHENA_ORIGINAL_ZDOTDIR/.zprofile"
+if [ -f "$SOPHIA_ORIGINAL_ZDOTDIR/.zprofile" ]; then
+    source "$SOPHIA_ORIGINAL_ZDOTDIR/.zprofile"
 fi

@@ -26,7 +26,7 @@ func runRerun(config clientConfig, args []string) error {
 		return err
 	}
 	if flags.NArg() != 1 || !eventIDPattern.MatchString(flags.Arg(0)) {
-		return fmt.Errorf("usage: athena rerun [--yes] EVENT_ID")
+		return fmt.Errorf("usage: sophia rerun [--yes] EVENT_ID")
 	}
 	eventID := flags.Arg(0)
 	request, err := config.request(http.MethodGet, "/api/commands/"+eventID+"/command", nil)
@@ -71,9 +71,9 @@ func runRerun(config clientConfig, args []string) error {
 		}
 	}
 
-	shellName := os.Getenv("ATHENA_CLIENT_SHELL")
+	shellName := os.Getenv("SOPHIA_CLIENT_SHELL")
 	if shellName == "" {
-		shellName = os.Getenv("ATHENA_SHELL")
+		shellName = os.Getenv("SOPHIA_SHELL")
 	}
 	if shellName == "" {
 		shellName = filepath.Base(os.Getenv("SHELL"))
