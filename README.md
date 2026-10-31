@@ -13,6 +13,7 @@ The client is distributed as one static Go executable. Shell integration files a
 - [Server installation](#server-installation)
 - [Server configuration](#server-configuration)
 - [Running with systemd](#running-with-systemd)
+- [Prebuilt Linux AMD64 binary](#prebuilt-linux-amd64-binary)
 - [Building the Go client](#building-the-go-client)
 - [Client configuration](#client-configuration)
 - [Client subcommands](#client-subcommands)
@@ -198,6 +199,40 @@ sudo systemctl status athena.service
 ```
 
 Adjust `User`, `Group`, `WorkingDirectory`, `EnvironmentFile`, and `ExecStart` if your installation differs.
+
+## Prebuilt Linux AMD64 binary
+
+A prebuilt client is included at:
+
+```text
+client/dist/athena-linux-amd64
+```
+
+Binary details:
+
+| Property | Value |
+|---|---|
+| Platform | Linux AMD64 (`x86_64`) |
+| Format | 64-bit ELF executable |
+| Linking | Statically linked |
+| Size | 6,529,184 bytes (~6.2 MiB) |
+| SHA-256 | `bfdfce99a8a314c4b73f6344c643975d791da653bb7416954fa493309df57bf0` |
+
+Verify the checksum before installation:
+
+```bash
+sha256sum client/dist/athena-linux-amd64
+```
+
+Install it on the client and make it executable:
+
+```bash
+scp client/dist/athena-linux-amd64 user@client:/home/user/athena
+ssh user@client 'chmod 700 /home/user/athena'
+/home/user/athena --help
+```
+
+No Go installation is required on the client when using this prebuilt binary.
 
 ## Building the Go client
 
