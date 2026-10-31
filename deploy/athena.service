@@ -1,0 +1,20 @@
+[Unit]
+Description=Athena command telemetry server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=debian
+Group=debian
+WorkingDirectory=/home/debian/athena
+EnvironmentFile=/home/debian/athena/athena.env
+ExecStart=/home/debian/athena/.venv/bin/athena-server
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

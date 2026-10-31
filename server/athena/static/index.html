@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Athena · Wisdom of Commands</title>
+  <script>
+    try {
+      if (localStorage.getItem("athena-theme") === "dark") document.documentElement.dataset.theme = "dark";
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div><strong>Athena</strong><span>Wisdom of Commands</span></div>
+      </div>
+
+      <div class="sidebar-dropdowns">
+        <details class="sidebar-dropdown">
+          <summary><span>Hosts</span><span id="host-selection-summary">Select hosts</span></summary>
+          <div class="dropdown-content">
+            <div class="dropdown-toolbar">
+              <span id="host-count" class="count">0 hosts</span>
+              <button id="clear-hosts" class="text-button" type="button" hidden>Clear</button>
+            </div>
+            <label class="compact-search">
+              <span aria-hidden="true">⌕</span>
+              <input id="host-search" type="search" placeholder="Filter IP or hostname" aria-label="Filter hosts">
+            </label>
+            <div id="host-list" class="host-list"><p class="muted">Waiting for activity…</p></div>
+          </div>
+        </details>
+
+        <details class="sidebar-dropdown">
+          <summary><span>Team mappings</span><span>Manage</span></summary>
+          <div class="dropdown-content team-upload">
+            <p>Upload a CSV or edit assignments manually. CSV import replaces all mappings.</p>
+            <input id="csv-file" type="file" accept=".csv,text/csv" hidden>
+            <button id="upload-button" class="secondary-button" type="button">Upload CSV</button>
+            <button id="clear-teams" class="secondary-button danger-button" type="button">Clear teams</button>
+            <div id="upload-status" class="upload-status" role="status"></div>
+            <div class="mapping-form">
+              <input id="mapping-cidr" type="text" placeholder="192.168.1.0/24" aria-label="CIDR range">
+              <input id="mapping-team" type="text" placeholder="Team name" aria-label="Team name" maxlength="100">
+              <div class="mapping-actions">
+                <button id="mapping-save" class="secondary-button" type="button">Add mapping</button>
+                <button id="mapping-cancel" class="text-button" type="button" hidden>Cancel</button>
+              </div>
+              <div id="mapping-status" class="upload-status" role="status"></div>
+            </div>
+            <section class="bulk-generator">
+              <div class="bulk-title">Generate consecutive teams</div>
+              <div class="mapping-form">
+                <input id="bulk-cidr" type="text" placeholder="192.168.101.0/24" aria-label="Starting CIDR range">
+                <input id="bulk-teams" type="number" min="1" max="100" value="10" aria-label="Number of teams">
+                <button id="bulk-add" class="secondary-button" type="button">Generate teams</button>
+                <p>Creates Team 1, Team 2, etc. Existing CIDR assignments are replaced.</p>
+                <div id="bulk-status" class="upload-status" role="status"></div>
+              </div>
+            </section>
+            <div id="team-summary" class="team-summary"></div>
+          </div>
+        </details>
+      </div>
+      <div class="theme-control">
+        <label class="theme-toggle" for="theme-toggle">
+          <span>Dark mode</span>
+          <input id="theme-toggle" type="checkbox">
+          <span class="switch-track" aria-hidden="true"><span></span></span>
+        </label>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Command activity</h1>
+          <p>Review commands and output from your connected hosts.</p>
+        </div>
+        <div id="connection-status" class="connection-status connecting"><span></span>Connecting</div>
+      </header>
+
+      <section class="filter-bar" aria-label="Event filters">
+        <label class="command-search">
+          <span aria-hidden="true">⌕</span>
+          <input id="command-search" type="search" placeholder="Search commands and output…" aria-label="Search commands and output">
+          <kbd>/</kbd>
+        </label>
+        <select id="team-filter" aria-label="Filter by target team">
+          <option value="">All target teams</option>
+        </select>
+        <button id="clear-filters" class="text-button" type="button" hidden>Clear filters</button>
+      </section>
+
+      <div class="feed-heading">
+        <div>Recent commands</div>
+        <span id="result-count">0 commands</span>
+      </div>
+
+      <div id="error-banner" class="error-banner" role="alert" hidden></div>
+      <section id="event-feed" class="event-feed" aria-live="polite"></section>
+      <div id="empty-state" class="empty-state" hidden>
+        <h2>No commands found</h2>
+        <p>New activity will appear here automatically.</p>
+      </div>
+      <button id="load-more" class="load-more" type="button" hidden>Load older commands</button>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
