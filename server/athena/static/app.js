@@ -67,7 +67,44 @@ function eventCard(event) {
   if (event.output) {
     const output = element("details", "output-details");
     output.append(element("summary", "", "Output"));
-    output.append(element("pre", "", event.output));
+    const outputLines = event.output.split("\n");
+    if (outputLines.at(-1) === "") outputLines.pop();
+    const toolbar = element("div", "output-toolbar");
+    toolbar.append(element("span", "output-line-count", `${outputLines.length} line${outputLines.length === 1 ? "" : "s"}`));
+    const copyButton = element("button", "copy-output", "Copy output");
+    copyButton.type = "button";
+    copyButton.addEventListener("click", async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(event.output);
+        } else {
+          const textarea = element("textarea");
+          textarea.value = event.output;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.append(textarea);
+          textarea.select();
+          const copied = document.execCommand("copy");
+          textarea.remove();
+          if (!copied) throw new Error("Copy failed");
+        }
+        copyButton.textContent = "Copied";
+        setTimeout(() => { copyButton.textContent = "Copy output"; }, 1200);
+      } catch (_) {
+        window.prompt("Copy command output:", event.output);
+      }
+    });
+    toolbar.append(copyButton);
+    const pre = element("pre");
+    outputLines.forEach((line, index) => {
+      const row = element("span", "output-line");
+      row.append(
+        element("span", "output-line-number", String(index + 1)),
+        element("span", "output-line-content", line || " "),
+      );
+      pre.append(row);
+    });
+    output.append(toolbar, pre);
     actions.append(output);
   } else {
     actions.append(element("span", "no-output", "No output"));
@@ -104,6 +141,34 @@ function eventCard(event) {
   });
   idRow.append(idButton);
   details.append(idRow);
+  const rerunRow = element("div", "event-detail-row");
+  rerunRow.append(element("span", "", "Rerun"));
+  const rerunButton = element("button", "copy-rerun", "Copy rerun command");
+  rerunButton.type = "button";
+  const rerunCommand = `athena rerun ${event.id}`;
+  rerunButton.addEventListener("click", async () => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(rerunCommand);
+      } else {
+        const textarea = element("textarea");
+        textarea.value = rerunCommand;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.append(textarea);
+        textarea.select();
+        const copied = document.execCommand("copy");
+        textarea.remove();
+        if (!copied) throw new Error("Copy failed");
+      }
+      rerunButton.textContent = "Copied";
+      setTimeout(() => { rerunButton.textContent = "Copy rerun command"; }, 1200);
+    } catch (_) {
+      window.prompt("Copy rerun command:", rerunCommand);
+    }
+  });
+  rerunRow.append(rerunButton);
+  details.append(rerunRow);
   information.append(details);
   actions.append(information);
   card.append(actions);
